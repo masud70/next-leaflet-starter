@@ -14,6 +14,10 @@
         "url": "https://github.com/masud70/Project_BD.git"
     },
     "dependencies": {
+        "@emotion/react": "^11.10.5",
+        "@emotion/styled": "^11.10.5",
+        "@mui/icons-material": "^5.11.0",
+        "@mui/material": "^5.11.0",
         "copy-webpack-plugin": "^11.0.0",
         "csvtojson": "^2.0.10",
         "leaflet": "^1.9.3",
