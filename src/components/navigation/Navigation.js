@@ -7,10 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from "@mui/material/TextField";
 import Router from 'next/router';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import app from '../../firebase/FireApp'
+import { CircularProgress } from "@mui/material";
 
-
-  
-
+const auth = getAuth(app)
 
 const index = () => {
 
@@ -27,14 +28,25 @@ const index = () => {
       setOpen(false);
     };
 
-    const submitLogInInfo= ()=>{
-        if(email=="admin@admin.com" && password=="admin"){
-            handleClose();
-            Router.push('/projects')  ///route to admin page
-        }
-        else{
+    const [loading, setLoading] = useState(false)
+
+    const submitLogInInfo = () => {
+        setLoading(true)
+
+        signInWithEmailAndPassword(auth, email, password)
+        .then(credentials => {
+            // Set user info forwards, and route to the admin panel
+            const user = credentials.user
+            // Route here
+            setLoading(false)
+            handleClose()
+        }).catch(error => {
             setWrongInfoAlert(true)
-        }
+            setLoading(false)
+            console.log("Sign-in error >", error)
+        })
+
+        
     }
 
 
@@ -71,6 +83,8 @@ const index = () => {
                     >
                         <DialogTitle sx={{fontWeight:'bold',margin:'auto',color:'#2a413c'}}>Log In as an Admin</DialogTitle>
                         <DialogContent sx={{minHeight:'150px',minWidth:'500px',display:'flex',alignItems:"center",flexDirection:'column'}}>
+                                {loading && <>Loading...<br/><CircularProgress/></>}
+                                
                                 <TextField onChange={(e) => {setEmail(e.target.value); setWrongInfoAlert(false);}} sx={{margin:'5px',width:'80%'}} id="email" label="Email" variant="outlined" />
                                 <TextField onChange={(e) => {setPassword(e.target.value); setWrongInfoAlert(false);}} sx={{margin:'5px',width:'80%'}}  id="password" label="Password" variant="outlined" />
                                 {

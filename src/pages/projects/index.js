@@ -10,6 +10,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
+import { CircularProgress } from "@mui/material";
 
 const index = () => {
     const [selected, setSelected] = useState({});
@@ -43,6 +44,27 @@ const index = () => {
             loc[Math.floor(loc.length / 2)].lng,
         ]);
     };
+
+    const [uploading, setUploading] = useState(false)
+
+    const handlePostIssue = async () => {
+        setUploading(true)
+        const comment = issue.trim()
+        if(!comment.length) {
+            setUploading(false)
+            return
+        }
+
+        const req = await fetch(`/api/post_issue?projectName=${encodeURIComponent(selected.project_name)}&issueComment=${encodeURIComponent(comment)}`)
+        const data = await req.json()
+
+        setUploading(false)
+    }
+
+    const handleModalCancel = () => {
+        setOpen(false)
+        setIssue('')
+    }
 
     useEffect(() => {
         fetchData().then((data) => {
@@ -194,24 +216,25 @@ const index = () => {
                     </Map>
                 </Box>
             </Grid>
-            <Dialog open={open} onClose={() => setOpen(false)}>
+            <Dialog open={open} onClose={handleModalCancel}>
                 <DialogTitle>{selected.project_name}</DialogTitle>
                 <DialogContent>
-                    <TextareaAutosize
+                    {uploading && <>Loading...<CircularProgress/></>}
+                    {!uploading && <TextareaAutosize
                         minRows={4}
                         value={issue}
                         variant="standard"
                         autoFocus
                         margin="dense"
                         id="issue"
-                        placeholder="Write an issue hare..."
+                        placeholder="Write an issue here..."
                         style={{ width: "100%", padding: "10px" }}
                         onChange={(e) => setIssue(e.target.value)}
-                    />
+                    />}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button onClick={() => setOpen(true)}>Post</Button>
+                    <Button onClick={handleModalCancel}>Cancel</Button>
+                    <Button onClick={handlePostIssue}>Post</Button>
                 </DialogActions>
             </Dialog>
             {/* List container */}
