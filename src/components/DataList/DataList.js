@@ -26,9 +26,9 @@ const DataList = ({data, onListItemSelect}) => {
     }
 
     return (
-        <Stack direction={'column'} sx={{width: '300px'}}>
+        <Stack direction={'column'} sx={{width: '300px',marginTop:'30px'}}>
             <List>
-                <ListItemButton onClick={handleOngoingListState}>
+                <ListItemButton sx={{backgroundColor:'#f3f1f1',borderRadius:'5px'}} onClick={handleOngoingListState}>
                     <ListItemAvatar>
                         <Work color='warning'/>
                     </ListItemAvatar>
@@ -45,7 +45,7 @@ const DataList = ({data, onListItemSelect}) => {
                 {
                     data.map((item , idx) => (
                         Number.parseFloat(item.completion_percentage) < 100 &&
-                        <ListItemButton key={'ongoing_' + idx} onClick={() => onListItemSelect(item)}>
+                        <ListItemButton sx={{backgroundColor:'#f3f1f1',margin:'1px',borderRadius:'4px'}} key={'ongoing_' + idx} onClick={() => onListItemSelect(item)}>
                             <ListItemText primary={item.project_name} primaryTypographyProps={{noWrap: true, variant: 'body2'}}/>
                         </ListItemButton>
                     ))
@@ -54,7 +54,7 @@ const DataList = ({data, onListItemSelect}) => {
             </List>
 
             <List>
-                <ListItemButton onClick={handleFinishedListState}>
+                <ListItemButton sx={{backgroundColor:'#f3f1f1',borderRadius:'5px'}} onClick={handleFinishedListState}>
                     <ListItemAvatar>
                         <Done color='success'/>
                     </ListItemAvatar>
@@ -70,7 +70,7 @@ const DataList = ({data, onListItemSelect}) => {
                 {
                     data.map((item , idx) => (
                         Number.parseFloat(item.completion_percentage) >= 100 &&
-                        <ListItemButton key={'ongoing_' + idx} onClick={() => onListItemSelect(item)}>
+                        <ListItemButton sx={{backgroundColor:'#f3f1f1',margin:'1px',borderRadius:'4px'}} key={'ongoing_' + idx} onClick={() => onListItemSelect(item)}>
                             <ListItemText primary={item.project_name} primaryTypographyProps={{noWrap: true, variant: 'body2'}}/>
                         </ListItemButton>
                     ))

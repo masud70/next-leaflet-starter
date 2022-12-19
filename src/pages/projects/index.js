@@ -56,7 +56,7 @@ const index = () => {
         {/* Map Container */}
         <Grid item xs={7}>
             <Box sx={{ margin: '16px' }}>
-            <Map center={center} zoom={11}>
+                <Map style={{borderRadius:'10px',border:'2px solid gray'}} center={center} zoom={11}>
                         {({ TileLayer, Marker, Popup }) => (
                             <>
                                 <TileLayer
