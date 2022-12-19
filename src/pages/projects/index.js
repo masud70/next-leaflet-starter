@@ -12,6 +12,7 @@ import TextareaAutosize from "@mui/base/TextareaAutosize";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
+import dayjs from "dayjs";
 
 const index = () => {
     const [selected, setSelected] = useState({});
@@ -26,7 +27,7 @@ const index = () => {
     const [center, setCenter] = useState([
         23.729211164246585, 90.40874895549243,
     ]);
-    const options = ["Category", "Project Time"];
+    const options = ["Category"];
 
     const fetchData = async () => {
         const req = await fetch("../api/get_data");
@@ -226,6 +227,35 @@ const index = () => {
                                                                     {
                                                                         item.completion_percentage
                                                                     }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Remaining
+                                                                    Time:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {dayjs(
+                                                                        item.project_completion_time
+                                                                    ).unix() <=
+                                                                    dayjs().unix()
+                                                                        ? "100%"
+                                                                        : (
+                                                                              ((dayjs(
+                                                                                  item.project_completion_time
+                                                                              ).unix() -
+                                                                                  dayjs().unix()) *
+                                                                                  100) /
+                                                                              (dayjs(
+                                                                                  item.project_completion_time
+                                                                              ).unix() -
+                                                                                  dayjs(
+                                                                                      item.project_start_time
+                                                                                  ).unix())
+                                                                          ).toFixed(
+                                                                              2
+                                                                          ) +
+                                                                          "%"}
                                                                 </div>
                                                             </div>
                                                             <div className="font-bold text-md w-full flex flex-row justify-center items-center">

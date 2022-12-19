@@ -68,9 +68,6 @@ const index = () => {
                     <li className=" text-md font-semibold hover:bg-slate-500 px-4 min-h-full py-2 hover:bg-opacity-50 transition-all delay-200 hover:text-slate-100">
                         <Link href="/about">About</Link>
                     </li>
-                    <li className=" text-md font-semibold hover:bg-slate-500 px-4 min-h-full py-2 hover:bg-opacity-50 transition-all delay-200 hover:text-slate-100">
-                        <Link href="/help">Help</Link>
-                    </li>
                     <Button sx={{fontWeight:'bold'}} variant="outlined" onClick={handleClickOpen}>
                         Log in
                     </Button>
