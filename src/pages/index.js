@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import Navigation from "../components/navigation/Navigation";
+import app from '../firebase/FireApp.js'
 
 export default function Home() {
     return (
