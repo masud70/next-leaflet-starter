@@ -4,8 +4,6 @@ import csvToJson from 'csvtojson'
 
 const handler = async (req, res) => {
     const dir = path.join(process.cwd(), 'public');
-
-    
     const arr = await csvToJson().fromFile(dir + '/projects.csv')
     
     arr.forEach(row => {
