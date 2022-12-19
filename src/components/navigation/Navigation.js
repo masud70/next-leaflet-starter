@@ -39,7 +39,8 @@ const index = () => {
             // Set user info forwards, and route to the admin panel
             const user = credentials.user
             setLoading(false)
-            Router.push('/admin')
+            if(email=='admin@admin.com') Router.push('/admin')
+            else Router.push('/projects')
             handleClose()
         }).catch(error => {
             setWrongInfoAlert(true)
