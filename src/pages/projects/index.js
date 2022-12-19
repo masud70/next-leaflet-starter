@@ -61,6 +61,7 @@ const index = () => {
                 dataX = [...dataX, item];
             }
         });
+        setMapData(dataX);
         setData(dataX);
     };
 
@@ -289,7 +290,7 @@ const index = () => {
                 <Button
                     className="w-full bg-slate-100 mt-4"
                     onClick={() => {
-                        setMapData(data);
+                        setMapData(allData);
                     }}
                 >
                     See All
