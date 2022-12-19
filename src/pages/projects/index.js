@@ -18,9 +18,11 @@ const index = () => {
     const [issue, setIssue] = useState("");
     const [mapData, setMapData] = useState([]);
     const [data, setData] = useState([]);
+    const [allData, setAllData] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [filterBy, setFilterBy] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [uploading, setUploading] = useState(false);
     const [center, setCenter] = useState([
         23.729211164246585, 90.40874895549243,
     ]);
@@ -30,6 +32,7 @@ const index = () => {
         const req = await fetch("api/get_data");
         const data = await req.json();
         setData(data);
+        setAllData(data);
         return data;
     };
 
@@ -51,16 +54,15 @@ const index = () => {
 
     const filterHandler = (filterBy) => {
         let dataX = [];
-        data.map((item) => {
+        allData.map((item) => {
             if (item.category === filterBy) {
                 dataX = [...dataX, item];
             } else if (filterBy === null) {
                 dataX = [...dataX, item];
             }
         });
-        setMapData(dataX);
+        setData(dataX);
     };
-    const [uploading, setUploading] = useState(false);
 
     const handlePostIssue = async () => {
         setUploading(true);
