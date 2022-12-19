@@ -7,9 +7,9 @@ import { useEffect, useState } from "react"
 const Admin = () => {
     const columns = [
         { field: 'id', headerName: "ID", width: 90 },
-        { field: 'project_name', headerName: 'Project Name', width: 256 },
-        { field: 'category', headerName: 'Category', width: 128 },
-        { field: 'issues_count', headerName: 'Number of Issues', width: 90}
+        { field: 'project_name', headerName: 'Project Name', width: 512 },
+        { field: 'category', headerName: 'Category', width: 256 },
+        { field: 'issues_count', headerName: 'Number of Issues', width: 256}
     ]
 
     const [rows, setRows] = useState([])
