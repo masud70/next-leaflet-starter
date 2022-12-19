@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import DataList from "@components/DataList/DataList";
 import React, { useEffect, useState } from "react";
 import Map from "@components/Map";
+import Head from "next/head";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -50,17 +51,12 @@ const index = () => {
     }, []);
 
     return (
-        <Grid
-            container
-            columns={10}
-            columnSpacing={1}
-            justifyContent="space-between"
-        >
-            {/* Grid View Container */}
-            {/* Map Container */}
-            <Grid item xs={7}>
-                <Box sx={{ margin: "16px" }}>
-                    <Map center={center} zoom={11}>
+        <Grid container columns={10} columnSpacing={1} justifyContent='space-between'>
+        {/* Grid View Container */}
+        {/* Map Container */}
+        <Grid item xs={7}>
+            <Box sx={{ margin: '16px' }}>
+            <Map center={center} zoom={11}>
                         {({ TileLayer, Marker, Popup }) => (
                             <>
                                 <TileLayer
@@ -190,44 +186,63 @@ const index = () => {
                             </>
                         )}
                     </Map>
-                </Box>
-            </Grid>
-            <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>{selected.project_name}</DialogTitle>
-                <DialogContent>
-                    <TextareaAutosize
-                        minRows={4}
-                        value={issue}
-                        variant="standard"
-                        autoFocus
-                        margin="dense"
-                        id="issue"
-                        placeholder="Write an issue hare..."
-                        style={{ width: "100%", padding: "10px" }}
-                        onChange={(e) => setIssue(e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button onClick={() => setOpen(true)}>Post</Button>
-                </DialogActions>
-            </Dialog>
-            {/* List container */}
-            <Grid item xs={3}>
-                <Button
-                    className="w-full bg-slate-100 mt-4"
-                    onClick={() => {
-                        setMapData(data);
-                    }}
-                >
-                    See All
-                </Button>
-                <DataList
-                    data={data}
-                    onListItemSelect={handleDataItemSelection}
-                />
-            </Grid>
+            </Box>
+            {/* <div className="w-full h-full flex flex-col md:flex-row overflow-hidden">
+                <div className="w-full md:w-8/12 lg:w-10/12">
+                    Map Goes Here
+                </div>
+                <div className="w-full md:w-4/12 lg:w-2/12 bg-slate-400">
+                    <div className="py-4 px-3 justify-center flex w-full flex-col space-y-2">
+                        <div className="w-full">
+                            <Autocomplete
+                                className="w-full"
+                                options={options}
+                                renderInput={(params) => (
+                                    <TextField {...params} label="Filter by" />
+                                )}
+                                onChange={(event, value) => setSelected(value)}
+                            />
+                        </div>
+                        <div className=" space-y-2">
+                            {selected && selected.value === 1 ? (
+                                <>
+                                    <Autocomplete
+                                        className="w-full"
+                                        options={categories}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label="Select Category"
+                                            />
+                                        )}
+                                    />
+                                </>
+                            ) : selected && selected.value === 2 ? (
+                                <>
+                                    <TextField
+                                        className="w-full"
+                                        label="Lat"
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        className="w-full"
+                                        label="Lng"
+                                        variant="outlined"
+                                    />
+                                </>
+                            ) : (
+                                <></>
+                            )}
+                        </div>
+                    </div>
+                </div>}
+            </div> */}
         </Grid>
+        {/* List container */}
+        <Grid item xs={3}>
+            <DataList data={data} onListItemSelect={handleDataItemSelection}/>
+        </Grid>
+    </Grid>
     );
 };
 
