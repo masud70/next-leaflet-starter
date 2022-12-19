@@ -81,7 +81,7 @@ const index = () => {
                         onClose={handleClose}
                         aria-describedby="alert-dialog-slide-description"
                     >
-                        <DialogTitle sx={{fontWeight:'bold',margin:'auto',color:'#2a413c'}}>Log In as an Admin</DialogTitle>
+                        <DialogTitle sx={{fontWeight:'bold',margin:'auto',color:'#2a413c'}}>Log In</DialogTitle>
                         <DialogContent sx={{minHeight:'150px',minWidth:'500px',display:'flex',alignItems:"center",flexDirection:'column'}}>
                                 {loading && <>Loading...<br/><CircularProgress/></>}
                                 
