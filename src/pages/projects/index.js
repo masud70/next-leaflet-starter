@@ -51,32 +51,39 @@ const index = () => {
 
     const filterHandler = (filterBy) => {
         let dataX = [];
-        data.map((item, idx) => {
+        data.map((item) => {
             if (item.category === filterBy) {
-                console.log(item.category);
+                dataX = [...dataX, item];
+            } else if (filterBy === null) {
+                dataX = [...dataX, item];
             }
         });
+        setMapData(dataX);
     };
-    const [uploading, setUploading] = useState(false)
+    const [uploading, setUploading] = useState(false);
 
     const handlePostIssue = async () => {
-        setUploading(true)
-        const comment = issue.trim()
-        if(!comment.length) {
-            setUploading(false)
-            return
+        setUploading(true);
+        const comment = issue.trim();
+        if (!comment.length) {
+            setUploading(false);
+            return;
         }
 
-        const req = await fetch(`/api/post_issue?projectName=${encodeURIComponent(selected.project_name)}&issueComment=${encodeURIComponent(comment)}`)
-        const data = await req.json()
+        const req = await fetch(
+            `/api/post_issue?projectName=${encodeURIComponent(
+                selected.project_name
+            )}&issueComment=${encodeURIComponent(comment)}`
+        );
+        const data = await req.json();
 
-        setUploading(false)
-    }
+        setUploading(false);
+    };
 
     const handleModalCancel = () => {
-        setOpen(false)
-        setIssue('')
-    }
+        setOpen(false);
+        setIssue("");
+    };
 
     useEffect(() => {
         fetchData()
@@ -250,18 +257,25 @@ const index = () => {
             <Dialog open={open} onClose={handleModalCancel}>
                 <DialogTitle>{selected.project_name}</DialogTitle>
                 <DialogContent>
-                    {uploading && <>Loading...<CircularProgress/></>}
-                    {!uploading && <TextareaAutosize
-                        minRows={4}
-                        value={issue}
-                        variant="standard"
-                        autoFocus
-                        margin="dense"
-                        id="issue"
-                        placeholder="Write an issue here..."
-                        style={{ width: "100%", padding: "10px" }}
-                        onChange={(e) => setIssue(e.target.value)}
-                    />}
+                    {uploading && (
+                        <>
+                            Loading...
+                            <CircularProgress />
+                        </>
+                    )}
+                    {!uploading && (
+                        <TextareaAutosize
+                            minRows={4}
+                            value={issue}
+                            variant="standard"
+                            autoFocus
+                            margin="dense"
+                            id="issue"
+                            placeholder="Write an issue here..."
+                            style={{ width: "100%", padding: "10px" }}
+                            onChange={(e) => setIssue(e.target.value)}
+                        />
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleModalCancel}>Cancel</Button>
@@ -300,7 +314,9 @@ const index = () => {
                                         label="Select Category"
                                     />
                                 )}
-                                onChange={(event, value) => setFilterBy(value)}
+                                onChange={(event, value) =>
+                                    filterHandler(value)
+                                }
                             />
                         </>
                     ) : (
