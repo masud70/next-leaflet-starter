@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import DataList from "@components/DataList/DataList";
 import React, { useEffect, useState } from "react";
 import Map from "@components/Map";
-import Head from "next/head";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
