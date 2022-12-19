@@ -51,17 +51,12 @@ const index = () => {
     }, []);
 
     return (
-        <Grid
-            container
-            columns={10}
-            columnSpacing={1}
-            justifyContent="space-between"
-        >
-            {/* Grid View Container */}
-            {/* Map Container */}
-            <Grid item xs={7}>
-                <Box sx={{ margin: "16px" }}>
-                        <Map style={{borderRadius:'10px',border:'2px solid gray'}} center={center} zoom={11}>
+        <Grid container columns={10} columnSpacing={1} justifyContent='space-between'>
+        {/* Grid View Container */}
+        {/* Map Container */}
+        <Grid item xs={7}>
+            <Box sx={{ margin: '16px' }}>
+            <Map style={{border:'2px solid gray',borderRadius:'5px'}} center={center} zoom={11}>
                         {({ TileLayer, Marker, Popup }) => (
                             <>
                                 <TileLayer

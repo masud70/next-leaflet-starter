@@ -21,15 +21,12 @@ const DataList = ({ data, onListItemSelect }) => {
         setOngoingOpen(!isOngoingOpen);
     };
 
-    //sx={{backgroundColor:'#f3f1f1',borderRadius:'5px'}}
-    //sx={{backgroundColor:'#f3f1f1',margin:'1px',borderRadius:'4px'}}
-
     const handleFinishedListState = () => {
         setCompleteOpen(!isCompleteOpen);
     };
 
     return (
-        <div className="h-screen overflow-auto">
+        <div className="h-screen overflow-auto mr-2">
             <Stack direction={"column"} sx={{ width: "300px',marginTop:'30px" }}>
                 <List>
                     <ListItemButton sx={{backgroundColor:'#f3f1f1',borderRadius:'5px'}} onClick={handleOngoingListState}>
@@ -54,7 +51,7 @@ const DataList = ({ data, onListItemSelect }) => {
                             (item, idx) =>
                                 Number.parseFloat(item.completion_percentage) <
                                     100 && (
-                                    <ListItemButton
+                                    <ListItemButton sx={{backgroundColor:'#f3f1f1',margin:'1px',borderRadius:'4px'}}
                                         key={"ongoing_" + idx}
                                         onClick={() => onListItemSelect(item)}
                                     >
@@ -72,7 +69,7 @@ const DataList = ({ data, onListItemSelect }) => {
                 </List>
 
                 <List>
-                    <ListItemButton onClick={handleFinishedListState}>
+                    <ListItemButton sx={{backgroundColor:'#f3f1f1',borderRadius:'5px'}} onClick={handleFinishedListState}>
                         <ListItemAvatar>
                             <Done color="success" />
                         </ListItemAvatar>
@@ -93,7 +90,7 @@ const DataList = ({ data, onListItemSelect }) => {
                             (item, idx) =>
                                 Number.parseFloat(item.completion_percentage) >=
                                     100 && (
-                                    <ListItemButton
+                                    <ListItemButton sx={{backgroundColor:'#f3f1f1',margin:'1px',borderRadius:'4px'}}
                                         key={"ongoing_" + idx}
                                         onClick={() => onListItemSelect(item)}
                                     >
