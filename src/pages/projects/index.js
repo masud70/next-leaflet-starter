@@ -9,6 +9,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const index = () => {
@@ -17,9 +19,12 @@ const index = () => {
     const [mapData, setMapData] = useState([]);
     const [data, setData] = useState([]);
     const [open, setOpen] = React.useState(false);
+    const [filterBy, setFilterBy] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [center, setCenter] = useState([
         23.729211164246585, 90.40874895549243,
     ]);
+    const options = ["Category", "Project Time"];
 
     const fetchData = async () => {
         const req = await fetch("api/get_data");
@@ -66,23 +71,30 @@ const index = () => {
     }
 
     useEffect(() => {
-        fetchData().then((data) => {
-            setMapData(data);
-        });
+        fetchData()
+            .then((data) => {
+                setMapData(data);
+                let array = [];
+                data.map((item) => {
+                    array = [...array, item.category];
+                });
+                array = array.filter(
+                    (item, index, array) => array.indexOf(item) === index
+                );
+                setCategories(array);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
 
     return (
-        <Grid
-            container
-            columns={10}
-            columnSpacing={1}
-            justifyContent="space-between"
-        >
-            {/* Grid View Container */}
-            {/* Map Container */}
-            <Grid item xs={7}>
-                <Box sx={{ margin: "16px" }}>
-                    <Map center={center} zoom={11}>
+        <Grid container columns={10} columnSpacing={1} justifyContent='space-between'>
+        {/* Grid View Container */}
+        {/* Map Container */}
+        <Grid item xs={7}>
+            <Box sx={{ margin: '16px' }}>
+            <Map style={{border:'2px solid gray',borderRadius:'5px'}} center={center} zoom={11}>
                         {({ TileLayer, Marker, Popup }) => (
                             <>
                                 <TileLayer
@@ -246,6 +258,35 @@ const index = () => {
                 >
                     See All
                 </Button>
+                <div className="w-full my-2">
+                    <Autocomplete
+                        className="w-full"
+                        options={options}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Filter by" />
+                        )}
+                        onChange={(event, value) => setFilterBy(value)}
+                    />
+                </div>
+                <div className="w-full mb-2">
+                    {filterBy && filterBy === "Category" ? (
+                        <>
+                            <Autocomplete
+                                className="w-full"
+                                options={categories}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Select Category"
+                                    />
+                                )}
+                                // onChange={(event, value) => setFilterBy(value)}
+                            />
+                        </>
+                    ) : (
+                        <></>
+                    )}
+                </div>
                 <DataList
                     data={data}
                     onListItemSelect={handleDataItemSelection}
