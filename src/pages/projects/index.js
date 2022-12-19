@@ -13,6 +13,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import dayjs from "dayjs";
+import swal from 'sweetalert';
 
 const index = () => {
     const [selected, setSelected] = useState({});
@@ -43,7 +44,7 @@ const index = () => {
             return a.lat < b.lat;
         });
 
-        console.log("Location Coordinates > ", mapData.location_coordinates);
+        // console.log("Location Coordinates > ", mapData.location_coordinates);
 
         setMapData([mapData]);
         const loc = mapData.location_coordinates;
@@ -80,8 +81,10 @@ const index = () => {
             )}&issueComment=${encodeURIComponent(comment)}`
         );
         const data = await req.json();
-
+        setIssue("");
         setUploading(false);
+        setOpen(false);
+        swal("Your issue has been recorded.");
     };
 
     const handleModalCancel = () => {
