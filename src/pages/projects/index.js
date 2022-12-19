@@ -48,6 +48,15 @@ const index = () => {
         ]);
     };
 
+    const filterHandler = (filterBy) => {
+        let dataX = [];
+        data.map((item, idx) => {
+            if (item.category === filterBy) {
+                console.log(item.category);
+            }
+        });
+    };
+
     useEffect(() => {
         fetchData()
             .then((data) => {
@@ -67,12 +76,24 @@ const index = () => {
     }, []);
 
     return (
-        <Grid container columns={10} columnSpacing={1} justifyContent='space-between'>
-        {/* Grid View Container */}
-        {/* Map Container */}
-        <Grid item xs={7}>
-            <Box sx={{ margin: '16px' }}>
-            <Map style={{border:'2px solid gray',borderRadius:'5px'}} center={center} zoom={11}>
+        <Grid
+            container
+            columns={10}
+            columnSpacing={1}
+            justifyContent="space-between"
+        >
+            {/* Grid View Container */}
+            {/* Map Container */}
+            <Grid item xs={7}>
+                <Box sx={{ margin: "16px" }}>
+                    <Map
+                        style={{
+                            border: "2px solid gray",
+                            borderRadius: "5px",
+                        }}
+                        center={center}
+                        zoom={11}
+                    >
                         {({ TileLayer, Marker, Popup }) => (
                             <>
                                 <TileLayer
@@ -257,7 +278,7 @@ const index = () => {
                                         label="Select Category"
                                     />
                                 )}
-                                // onChange={(event, value) => setFilterBy(value)}
+                                onChange={(event, value) => setFilterBy(value)}
                             />
                         </>
                     ) : (
