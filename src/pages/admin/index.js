@@ -3,6 +3,7 @@ import { DataGrid } from "@mui/x-data-grid"
 import app from '../../firebase/FireApp'
 import { collection, getDocs, getFirestore } from "firebase/firestore"
 import { useEffect, useState } from "react"
+import Map from "@components/Map";
 
 const Admin = () => {
     const columns = [
@@ -13,6 +14,10 @@ const Admin = () => {
     ]
 
     const [rows, setRows] = useState([])
+    const [mapData, setMapData] = useState([]);
+    const [center, setCenter] = useState([
+        23.729211164246585, 90.40874895549243,
+    ]);
 
     const fetchData = async () => {
         const req = await fetch('/api/get_data')
@@ -44,8 +49,150 @@ const Admin = () => {
     useEffect(() => { fetchData() }, [])
 
     return (
-        <Box sx={{height: '60vh', width: '100%'}}>
-            <DataGrid 
+        <Box sx={{height:'100vh'}} >
+                <Map
+                    style={{
+                        border: "2px solid gray",
+                        borderRadius: "5px",
+                        maxWidth:'80%',
+                        padding:'10px',
+                        marginBottom:'20px',
+                    }}
+                    center={center}
+                    zoom={11}
+                >
+                    {({ TileLayer, Marker, Popup }) => (
+                        <>
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            />
+                            {mapData &&
+                                mapData.map((item, id) =>
+                                    item.location_coordinates.map(
+                                        (pos, idx) => (
+                                            <Marker
+                                                position={[
+                                                    pos.lat,
+                                                    pos.long,
+                                                ]}
+                                                key={`project_${id}_marker_${
+                                                    idx + 1
+                                                }`}
+                                            >
+                                                <Popup className="w-[400px]">
+                                                    <div className="w-full space-y-2">
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Project
+                                                                Name:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.project_name
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Agency:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.affiliated_agency
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Description:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.description
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Category:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.category
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Total
+                                                                Budget:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.total_budget
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Start time:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.project_start_time
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                End time:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.project_completion_time
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Completed:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    item.completion_percentage
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row justify-center items-center">
+                                                            <Button
+                                                                variant="contained"
+                                                                className="bg-slate-600"
+                                                                onClick={() => {
+                                                                    setOpen(
+                                                                        true
+                                                                    );
+                                                                    setSelected(
+                                                                        item
+                                                                    );
+                                                                }}
+                                                            >
+                                                                Post an
+                                                                issue or
+                                                                concern
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </Popup>
+                                            </Marker>
+                                        )
+                                    )
+                                )}
+                        </>
+                    )}
+                </Map>
+            <DataGrid
+            sx={{marginTop:'20px',height:'400px'}} 
             rows={rows} 
             columns={columns} 
             pageSize={5} 

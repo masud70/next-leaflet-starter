@@ -16,3 +16,6 @@
 .css-xa4i53-MuiStack-root {
     width: 100% !important;
 }
+*{
+    aspect-ratio:0 !important;
+}

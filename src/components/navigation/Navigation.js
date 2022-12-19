@@ -6,10 +6,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from "@mui/material/TextField";
-import Router from 'next/router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import app from '../../firebase/FireApp'
 import CircularProgress from "@mui/material/CircularProgress";
+import Router from 'next/router';
+
 
 const auth = getAuth(app)
 
@@ -37,8 +38,9 @@ const index = () => {
         .then(credentials => {
             // Set user info forwards, and route to the admin panel
             const user = credentials.user
-            // Route here
             setLoading(false)
+            if(email=='admin@admin.com') Router.push('/admin')
+            else Router.push('/projects')
             handleClose()
         }).catch(error => {
             setWrongInfoAlert(true)
