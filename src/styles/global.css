@@ -10,6 +10,9 @@
 * {
     aspect-ratio: none !important;
 }
-.leaflet-popup-content{
-    width: 93% !important;
+.leaflet-popup-content {
+    width: 90% !important;
+}
+.css-xa4i53-MuiStack-root {
+    width: 100% !important;
 }
