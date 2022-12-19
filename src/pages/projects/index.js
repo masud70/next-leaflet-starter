@@ -27,7 +27,7 @@ const index = () => {
     const options = ["Category", "Project Time"];
 
     const fetchData = async () => {
-        const req = await fetch("api/get_data");
+        const req = await fetch("../api/get_data");
         const data = await req.json();
         setData(data);
         return data;
