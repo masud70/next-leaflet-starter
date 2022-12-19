@@ -1,7 +1,16 @@
 import Stack from '@mui/material/Stack'
 import List from '@mui/material/List'
-import { Collapse, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material'
-import { Done, ExpandLess, ExpandMore, Work } from '@mui/icons-material'
+import Collapse from '@mui/material/Collapse'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+
+import Done from '@mui/icons-material/Done'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import Work from '@mui/icons-material/Work'
+
 import { useState } from 'react'
 
 const DataList = ({data, onListItemSelect}) => {
