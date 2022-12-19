@@ -147,6 +147,9 @@ const index = () => {
                                                 >
                                                     <Popup className="w-[400px]">
                                                         <div className="w-full space-y-2">
+                                                            <div className="w-full flex justify-center items-center font-bold text-lg">
+                                                                Project Details
+                                                            </div>
                                                             <div className="font-bold text-md w-full flex flex-row">
                                                                 <div className="w-3/12">
                                                                     Project
