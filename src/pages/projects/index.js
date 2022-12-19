@@ -178,7 +178,7 @@ const index = () => {
                                                                     }}
                                                                 >
                                                                     Post an
-                                                                    issue
+                                                                    issue or concern
                                                                 </Button>
                                                             </div>
                                                         </div>
