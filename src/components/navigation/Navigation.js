@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import Router from 'next/router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import app from '../../firebase/FireApp'
-import { CircularProgress } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const auth = getAuth(app)
 
