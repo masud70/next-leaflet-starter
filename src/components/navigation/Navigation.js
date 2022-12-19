@@ -69,7 +69,7 @@ const index = () => {
                         onClose={handleClose}
                         aria-describedby="alert-dialog-slide-description"
                     >
-                        <DialogTitle sx={{fontWeight:'bold',margin:'auto',color:'#2a413c'}}>Log In as an Admin</DialogTitle>
+                        <DialogTitle sx={{fontWeight:'bold',margin:'auto',color:'#2a413c'}}>Log In</DialogTitle>
                         <DialogContent sx={{minHeight:'150px',minWidth:'500px',display:'flex',alignItems:"center",flexDirection:'column'}}>
                                 <TextField onChange={(e) => {setEmail(e.target.value); setWrongInfoAlert(false);}} sx={{margin:'5px',width:'80%'}} id="email" label="Email" variant="outlined" />
                                 <TextField onChange={(e) => {setPassword(e.target.value); setWrongInfoAlert(false);}} sx={{margin:'5px',width:'80%'}}  id="password" label="Password" variant="outlined" />
