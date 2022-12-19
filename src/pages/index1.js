@@ -32,7 +32,6 @@ export default function Home() {
             <Section>
                 <Container>
                     <h1 className={styles.title}>Project BD</h1>
-
                     <Map
                         className={styles.homeMap}
                         width="800"
