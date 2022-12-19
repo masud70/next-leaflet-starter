@@ -238,19 +238,24 @@ const index = () => {
                                                                     {dayjs(
                                                                         item.project_completion_time
                                                                     ).unix() <=
-                                                                        dayjs().unix()
+                                                                    dayjs().unix()
                                                                         ? "100%"
-                                                                        : (((dayjs(
-                                                                              item.project_completion_time
-                                                                          ).unix() -
-                                                                              dayjs().unix()) *
-                                                                              100) /
+                                                                        : (
+                                                                              ((dayjs(
+                                                                                  item.project_completion_time
+                                                                              ).unix() -
+                                                                                  dayjs().unix()) *
+                                                                                  100) /
                                                                               (dayjs(
                                                                                   item.project_completion_time
                                                                               ).unix() -
-                                                                          dayjs(
-                                                                              item.project_start_time
-                                                                          ).unix())).toFixed(2) + "%"}
+                                                                                  dayjs(
+                                                                                      item.project_start_time
+                                                                                  ).unix())
+                                                                          ).toFixed(
+                                                                              2
+                                                                          ) +
+                                                                          "%"}
                                                                 </div>
                                                             </div>
                                                             <div className="font-bold text-md w-full flex flex-row justify-center items-center">
