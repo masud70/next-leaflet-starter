@@ -4,18 +4,16 @@ import DataList from "@components/DataList/DataList";
 import React, { useEffect, useState } from "react";
 import Map from "@components/Map";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import TextareaAutosize from '@mui/base/TextareaAutosize';
+import TextareaAutosize from "@mui/base/TextareaAutosize";
 
 const index = () => {
-    const [isMounted, setIsMounted] = useState(false);
     const [selected, setSelected] = useState({});
     const [issue, setIssue] = useState("");
-    const [mapData, setMapData] = useState({});
+    const [mapData, setMapData] = useState([]);
     const [data, setData] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [center, setCenter] = useState([
@@ -26,6 +24,7 @@ const index = () => {
         const req = await fetch("api/get_data");
         const data = await req.json();
         setData(data);
+        return data;
     };
 
     const handleDataItemSelection = (mapData) => {
@@ -36,15 +35,19 @@ const index = () => {
 
         console.log("Location Coordinates > ", mapData.location_coordinates);
 
-        setMapData(mapData);
-        setCenter(mapData[mapData.length / 2]);
+        setMapData([mapData]);
+        const loc = mapData.location_coordinates;
+        setCenter([
+            loc[Math.floor(loc.length / 2)].lat,
+            loc[Math.floor(loc.length / 2)].lng,
+        ]);
     };
 
     useEffect(() => {
-        fetchData();
+        fetchData().then((data) => {
+            setMapData(data);
+        });
     }, []);
-
-    let categories = [];
 
     return (
         <Grid
@@ -64,116 +67,124 @@ const index = () => {
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 />
-                                {mapData.location_coordinates &&
-                                    mapData.location_coordinates.map(
-                                        (pos, id) => (
-                                            <Marker
-                                                position={[pos.lat, pos.long]}
-                                                key={`project_${id}_marker_${
-                                                    id + 1
-                                                }`}
-                                            >
-                                                <Popup className="w-[400px]">
-                                                    <div className="w-full space-y-2">
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Project Name:
+                                {mapData &&
+                                    mapData.map((item, id) =>
+                                        item.location_coordinates.map(
+                                            (pos, idx) => (
+                                                <Marker
+                                                    position={[
+                                                        pos.lat,
+                                                        pos.long,
+                                                    ]}
+                                                    key={`project_${id}_marker_${
+                                                        idx + 1
+                                                    }`}
+                                                >
+                                                    <Popup className="w-[400px]">
+                                                        <div className="w-full space-y-2">
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Project
+                                                                    Name:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.project_name
+                                                                    }
+                                                                </div>
                                                             </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.project_name
-                                                                }
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Agency:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.affiliated_agency
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Description:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.description
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Category:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.category
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Total
+                                                                    Budget:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.total_budget
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Start time:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.project_start_time
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    End time:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.project_completion_time
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row">
+                                                                <div className="w-3/12">
+                                                                    Completed:
+                                                                </div>
+                                                                <div className="w-9/12">
+                                                                    {
+                                                                        item.completion_percentage
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <div className="font-bold text-md w-full flex flex-row justify-center items-center">
+                                                                <Button
+                                                                    variant="contained"
+                                                                    className="bg-slate-600"
+                                                                    onClick={() => {
+                                                                        setOpen(
+                                                                            true
+                                                                        );
+                                                                        setSelected(
+                                                                            item
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    Post an
+                                                                    issue
+                                                                </Button>
                                                             </div>
                                                         </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Agency:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.affiliated_agency
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Description:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.description
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Category:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.category
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Total Budget:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.total_budget
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Start time:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.project_start_time
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                End time:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.project_completion_time
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row">
-                                                            <div className="w-3/12">
-                                                                Completed:
-                                                            </div>
-                                                            <div className="w-9/12">
-                                                                {
-                                                                    mapData.completion_percentage
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="font-bold text-md w-full flex flex-row justify-center items-center">
-                                                            <Button
-                                                                variant="contained"
-                                                                className="bg-slate-600"
-                                                                onClick={() => {
-                                                                    setOpen(
-                                                                        true
-                                                                    );
-                                                                    setSelected(
-                                                                        mapData
-                                                                    );
-                                                                }}
-                                                            >
-                                                                Post an issue
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                </Popup>
-                                            </Marker>
+                                                    </Popup>
+                                                </Marker>
+                                            )
                                         )
                                     )}
                             </>
@@ -187,23 +198,30 @@ const index = () => {
                     <TextareaAutosize
                         minRows={4}
                         value={issue}
-                        fullWidth
                         variant="standard"
                         autoFocus
                         margin="dense"
                         id="issue"
                         placeholder="Write an issue hare..."
-                        style={{ width: '100%', padding: '10px' }}
+                        style={{ width: "100%", padding: "10px" }}
                         onChange={(e) => setIssue(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button onClick={() => setOpen(true)}>Subscribe</Button>
+                    <Button onClick={() => setOpen(true)}>Post</Button>
                 </DialogActions>
             </Dialog>
             {/* List container */}
             <Grid item xs={3}>
+                <Button
+                    className="w-full bg-slate-100 mt-4"
+                    onClick={() => {
+                        setMapData(data);
+                    }}
+                >
+                    See All
+                </Button>
                 <DataList
                     data={data}
                     onListItemSelect={handleDataItemSelection}
