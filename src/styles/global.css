@@ -10,3 +10,6 @@
 * {
     aspect-ratio: none !important;
 }
+.leaflet-popup-content{
+    width: 93% !important;
+}

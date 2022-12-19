@@ -1,21 +1,23 @@
-import Box from "@mui/material/Box"
-import Grid from '@mui/material/Grid'
-import DataList from '@components/DataList/DataList';
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import DataList from "@components/DataList/DataList";
 import React, { useEffect, useState } from "react";
 import Map from "@components/Map";
-const DEFAULT_CENTER = [23.729211164246585, 90.40874895549243];
-
-const options = [
-    { label: "Category", value: 1 },
-    { label: "Project Time", value: 2 },
-];
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextareaAutosize from '@mui/base/TextareaAutosize';
 
 const index = () => {
     const [isMounted, setIsMounted] = useState(false);
-    const [selected, setSelected] = useState(null);
-    const [selectedPark, setSelectedPark] = useState(null);
+    const [selected, setSelected] = useState({});
+    const [issue, setIssue] = useState("");
     const [mapData, setMapData] = useState({});
     const [data, setData] = useState([]);
+    const [open, setOpen] = React.useState(false);
     const [center, setCenter] = useState([
         23.729211164246585, 90.40874895549243,
     ]);
@@ -71,15 +73,104 @@ const index = () => {
                                                     id + 1
                                                 }`}
                                             >
-                                                <Popup>
-                                                    <div className="w-100">
-                                                        <div className="font-bold text-lg w-full">
-                                                            Project Name:{" "}
-                                                            {
-                                                                mapData.project_name
-                                                            }
+                                                <Popup className="w-[400px]">
+                                                    <div className="w-full space-y-2">
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Project Name:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.project_name
+                                                                }
+                                                            </div>
                                                         </div>
-
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Agency:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.affiliated_agency
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Description:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.description
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Category:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.category
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Total Budget:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.total_budget
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Start time:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.project_start_time
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                End time:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.project_completion_time
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row">
+                                                            <div className="w-3/12">
+                                                                Completed:
+                                                            </div>
+                                                            <div className="w-9/12">
+                                                                {
+                                                                    mapData.completion_percentage
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="font-bold text-md w-full flex flex-row justify-center items-center">
+                                                            <Button
+                                                                variant="contained"
+                                                                className="bg-slate-600"
+                                                                onClick={() => {
+                                                                    setOpen(
+                                                                        true
+                                                                    );
+                                                                    setSelected(
+                                                                        mapData
+                                                                    );
+                                                                }}
+                                                            >
+                                                                Post an issue
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                 </Popup>
                                             </Marker>
@@ -89,57 +180,28 @@ const index = () => {
                         )}
                     </Map>
                 </Box>
-                {/* <div className="w-full h-full flex flex-col md:flex-row overflow-hidden">
-                <div className="w-full md:w-8/12 lg:w-10/12">
-                    Map Goes Here
-                </div>
-                <div className="w-full md:w-4/12 lg:w-2/12 bg-slate-400">
-                    <div className="py-4 px-3 justify-center flex w-full flex-col space-y-2">
-                        <div className="w-full">
-                            <Autocomplete
-                                className="w-full"
-                                options={options}
-                                renderInput={(params) => (
-                                    <TextField {...params} label="Filter by" />
-                                )}
-                                onChange={(event, value) => setSelected(value)}
-                            />
-                        </div>
-                        <div className=" space-y-2">
-                            {selected && selected.value === 1 ? (
-                                <>
-                                    <Autocomplete
-                                        className="w-full"
-                                        options={categories}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label="Select Category"
-                                            />
-                                        )}
-                                    />
-                                </>
-                            ) : selected && selected.value === 2 ? (
-                                <>
-                                    <TextField
-                                        className="w-full"
-                                        label="Lat"
-                                        variant="outlined"
-                                    />
-                                    <TextField
-                                        className="w-full"
-                                        label="Lng"
-                                        variant="outlined"
-                                    />
-                                </>
-                            ) : (
-                                <></>
-                            )}
-                        </div>
-                    </div>
-                </div>}
-            </div> */}
             </Grid>
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>{selected.project_name}</DialogTitle>
+                <DialogContent>
+                    <TextareaAutosize
+                        minRows={4}
+                        value={issue}
+                        fullWidth
+                        variant="standard"
+                        autoFocus
+                        margin="dense"
+                        id="issue"
+                        placeholder="Write an issue hare..."
+                        style={{ width: '100%', padding: '10px' }}
+                        onChange={(e) => setIssue(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button onClick={() => setOpen(true)}>Subscribe</Button>
+                </DialogActions>
+            </Dialog>
             {/* List container */}
             <Grid item xs={3}>
                 <DataList
