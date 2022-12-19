@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 const DataList = ({data, onListItemSelect}) => {
     const [isOngoingOpen, setOngoingOpen] = useState(true)
-    const [isCompleteOpen, setCompleteOpen] = useState(true)
+    const [isCompleteOpen, setCompleteOpen] = useState(false)
 
     const handleOngoingListState = () => {
         setOngoingOpen(!isOngoingOpen)

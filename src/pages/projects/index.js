@@ -1,6 +1,6 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Box, Grid, TextField } from "@mui/material";
 import DataList from '@components/DataList/DataList';
-import React, { useEffect, useState }, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Map from "@components/Map";
 const DEFAULT_CENTER = [23.729211164246585, 90.40874895549243];
 
@@ -13,47 +13,69 @@ const index = () => {
     const [isMounted, setIsMounted] = useState(false);
     const [selected, setSelected] = useState(null);
     const [selectedPark, setSelectedPark] = useState(null);
-    const [data, setData] = useState({});
+    const [mapData, setMapData] = useState({})
+    const [data, setData] = useState([]);
+    const [center, setCenter] = useState([23.729211164246585, 90.40874895549243])
+
     const fetchData = async () => {
         const req = await fetch("api/get_data");
         const data = await req.json();
         setData(data);
     };
+
+    const handleDataItemSelection = (mapData) => {
+        mapData.location_coordinates.sort((a, b) => {
+            if(a.lat == b.lat) return a.long < b.long
+            return a.lat < b.lat
+        })
+
+        console.log("Location Coordinates > ", mapData.location_coordinates)
+
+        setMapData(mapData)
+        setCenter(mapData[mapData.length / 2])
+    }
+    
     useEffect(() => {
         fetchData();
     }, []);
+    
     let categories = [];
 
     return (
-        <div className="">
-            <div className="w-full h-full flex flex-col md:flex-row overflow-hidden">
-                <div className="w-full md:w-8/12 lg:w-10/12">
-                    <Map center={DEFAULT_CENTER} zoom={10}>
+        <Grid container columns={10} columnSpacing={1} justifyContent='space-between'>
+        {/* Grid View Container */}
+        {/* Map Container */}
+        <Grid item xs={7}>
+            <Box sx={{ margin: '16px' }}>
+            <Map center={center} zoom={11}>
                         {({ TileLayer, Marker, Popup }) => (
                             <>
                                 <TileLayer
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                 />
-                                {data.map((item, idx) =>
-                                    item.location_coordinates.map((pos, id) => (
+                                {
+                                    mapData.location_coordinates && mapData.location_coordinates.map((pos, id) => (
                                         <Marker
                                             position={[pos.lat, pos.long]}
-                                            key={`project_${idx}_marker_${
+                                            key={`project_${id}_marker_${
                                                 id + 1
-                                            }`}
-                                        >
+                                            }`}>
                                             <Popup>
                                                 Project Name:{" "}
-                                                {item.project_name} <br />{" "}
+                                                {mapData.project_name} <br />{" "}
                                                 Easily customizable.
                                             </Popup>
                                         </Marker>
                                     ))
-                                )}
+                                }
                             </>
                         )}
                     </Map>
+            </Box>
+            {/* <div className="w-full h-full flex flex-col md:flex-row overflow-hidden">
+                <div className="w-full md:w-8/12 lg:w-10/12">
+                    Map Goes Here
                 </div>
                 <div className="w-full md:w-4/12 lg:w-2/12 bg-slate-400">
                     <div className="py-4 px-3 justify-center flex w-full flex-col space-y-2">
@@ -99,9 +121,14 @@ const index = () => {
                             )}
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </div>}
+            </div> */}
+        </Grid>
+        {/* List container */}
+        <Grid item xs={3}>
+            <DataList data={data} onListItemSelect={handleDataItemSelection}/>
+        </Grid>
+    </Grid>
     );
 };
 
